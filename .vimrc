@@ -34,6 +34,12 @@ NeoBundle 'Shougo/neocomplcache-clang'
 NeoBundle 'pekepeke/titanium-vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'altercation/solarized'
+NeoBundle 'nanotech/jellybeans.vim'
+
 
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
@@ -68,7 +74,7 @@ if has("cscope") && filereadable("/usr/bin/cscope")
    set csverb
 endif
 
-set t_Co=256
+"set t_Co=256
 set laststatus=2
 
 " Switch syntax highlighting on, when the terminal has colors
@@ -90,6 +96,7 @@ endif
 " http://www.linuxpowertop.org/known.php
 let &guicursor = &guicursor . ",a:blinkon0"
 
+set number
 set autoindent
 set expandtab
 set tabstop=4
@@ -164,10 +171,13 @@ nnoremap <silent> <C-l> :<C-u>FufLine!<CR>
 
 syntax enable
 set background=dark
+set t_Co=256
 ""let g:solarized_termcolors=256
 "colorscheme solarized
+"colorscheme molokai
+colorscheme jellybeans
 "call togglebg#map("<F5>")
-colorscheme Tomorrow-Night-Eighties
+"colorscheme Tomorrow-Night-Eighties
 
 "colorscheme slate
 "hi Pmenu ctermfg=0 ctermbg=6 guibg=#444444
@@ -183,6 +193,8 @@ colorscheme Tomorrow-Night-Eighties
 imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+
+imap <C-j> <Esc>
 
 " For snippet_complete marker.
 if has('conceal')
@@ -212,4 +224,57 @@ augroup HighlightTrailingSpaces
   autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
   autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
+
+"以下@tokuhirom さんの設定パクリ
+"(http://perl-users.jp/articles/advent-calendar/2012/casual/13)
+autocmd BufNewFile *.pl 0r $HOME/.vim/template/perl-script.txt
+autocmd BufNewFile *.t 0r $HOME/.vim/template/perl-test.txt
+
+function! s:pm_template()
+let path = substitute(expand('%'), '.*lib/', '', 'g')
+let path = substitute(path, '[\\/]', '::', 'g')
+let path = substitute(path, '\.pm$', '', 'g')
+
+call append(0, 'package ' . path . ';')
+call append(1, 'use strict;')
+call append(2, 'use warnings;')
+"call append(3, 'use utf8;')
+call append(3, '')
+call append(4, '')
+call append(5, '')
+call append(6, '')
+call append(7, '1;')
+call cursor(6, 0)
+" echomsg path
+endfunction
+autocmd BufNewFile *.pm call s:pm_template()
+
+function! s:get_package_name()
+let mx = '^\s*package\s\+\([^ ;]\+\)'
+for line in getline(1, 5)
+    if line =~ mx
+        return substitute(matchstr(line, mx), mx, '\1', '')
+    endif
+endfor
+return ""
+endfunction
+
+function! s:check_package_name()
+let path = substitute(expand('%:p'), '\\', '/', 'g')
+let name = substitute(s:get_package_name(), '::', '/', 'g') . '.pm'
+if path[-len(name):] != name
+    echohl WarningMsg
+    echomsg "ぱっけーじめいと、ほぞんされているぱすが、ちがうきがします！"
+    echomsg "ちゃんとなおしてください＞＜"
+    echohl None
+endif
+endfunction
+
+au! BufWritePost *.pm call s:check_package_name()
+
+map ,pt <Esc>:%! perltidy -se<CR>
+map ,ptv <Esc>:'<,'>! perltidy -se<CR>
+
+"@tokuhirom さんのパクリここまで
+
 
