@@ -15,7 +15,6 @@ filetype off                   " Required!
 
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim/
-
 endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
@@ -98,9 +97,12 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 set number
 set autoindent
-" set expandtab
+set expandtab
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
+set backspace=2
+
 if has("autocmd")
     autocmd FileType *
                 \ let &l:comments
@@ -185,6 +187,16 @@ colorscheme jellybeans
 "set cursorline
 "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 
+" CursorLine
+" set cursorline
+" CursorLine current window only
+" augroup cch
+" autocmd! cch
+" autocmd WinLeave * set nocursorline
+" autocmd WinEnter,BufRead * set cursorline
+" augroup END
+" hi CursorLine cterm=none ctermbg=darkblue gui=none guibg=darkblue
+
 " Plugin key-mappings.
 "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 "smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -194,7 +206,6 @@ colorscheme jellybeans
 " smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 " imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 
-imap <C-j> <Esc>
 
 " For snippet_complete marker.
 if has('conceal')
@@ -278,6 +289,7 @@ map ,ptv <Esc>:'<,'>! perltidy -se<CR>
 "@tokuhirom さんのパクリここまで
 
 
+imap <C-j> <Esc>
 nnoremap <C-e> :! perl -c %<Enter>
 nnoremap <C-g> :! sudo apachectl restart <Enter>
 inoremap <C-l> if ($_::TEST_MODE) {use MLog;use Data::Dumper;local $Data::Dumper::Indent=1;local $Data::Dumper::Terse=1;MLog::write("$_::LOG_DIR/debug", Dumper("DEBUG"));}
@@ -336,4 +348,8 @@ endif
 " autocmd FileType javascript :set encoding=utf8
 " autocmd FileType perl :set encoding=euc-jp
 " autocmd FileType sql :set encoding=sjis
+
+" Highlight invisible characters
+set list
+set lcs=tab:>-,trail:_,extends:>,precedes:<,nbsp:x
 
