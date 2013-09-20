@@ -97,7 +97,7 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 set number
 set autoindent
-set expandtab
+"set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
