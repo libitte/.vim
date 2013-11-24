@@ -173,6 +173,7 @@ nnoremap <silent> <C-l> :<C-u>FufLine!<CR>
 
 syntax enable
 set background=dark
+"set background=light
 set t_Co=256
 ""let g:solarized_termcolors=256
 "colorscheme solarized
@@ -188,14 +189,18 @@ colorscheme jellybeans
 "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 
 " CursorLine
-" set cursorline
+set cursorline
 " CursorLine current window only
-" augroup cch
-" autocmd! cch
-" autocmd WinLeave * set nocursorline
-" autocmd WinEnter,BufRead * set cursorline
-" augroup END
-" hi CursorLine cterm=none ctermbg=darkblue gui=none guibg=darkblue
+augroup cch
+ autocmd! cch
+ autocmd WinLeave * set nocursorline
+ autocmd WinEnter,BufRead * set cursorline
+augroup END
+hi CursorLine cterm=none ctermbg=darkblue gui=none guibg=darkblue
+
+" Clipboard
+set clipboard+=autoselect
+set clipboard+=unnamed
 
 " Plugin key-mappings.
 "imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -292,7 +297,8 @@ map ,ptv <Esc>:'<,'>! perltidy -se<CR>
 imap <C-j> <Esc>
 nnoremap <C-e> :! perl -c %<Enter>
 nnoremap <C-g> :! sudo apachectl restart <Enter>
-inoremap <C-l> if ($_::TEST_MODE) {use MLog;use Data::Dumper;local $Data::Dumper::Indent=1;local $Data::Dumper::Terse=1;MLog::write("$_::LOG_DIR/debug", Dumper("DEBUG"));}
+" inoremap <C-l> if ($_::TEST_MODE) {use MLog;use Data::Dumper;local $Data::Dumper::Indent=1;local $Data::Dumper::Terse=1;MLog::write("$_::LOG_DIR/debug", Dumper("DEBUG"));}
+inoremap <C-D> if ($_::TEST_MODE) {use Data::Dumper;use IO::File;my $fh=IO::File->new(">> $_::LOG_DIR/mydump");if (defined $fh) { print $fh Dumper($str); $fh->close; }}
 
 
 " ==========================
