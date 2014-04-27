@@ -1,6 +1,6 @@
-" if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
-"    set fileencodings=ucs-bom,utf-8,euc-jp,latin1
-" endif
+if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
+   set fileencodings=ucs-bom,utf-8,euc-jp,latin1
+endif
 
 set nocompatible    " Use Vim defaults (much better!)
 set bs=indent,eol,start     " allow backspacing over everything in insert mode
@@ -97,7 +97,7 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 set number
 set autoindent
-"set expandtab
+set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -185,15 +185,15 @@ colorscheme Tomorrow-Night-Eighties
 "set cursorline
 "hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 
-" CursorLine
-set cursorline
-" CursorLine current window only
-augroup cch
- autocmd! cch
- autocmd WinLeave * set nocursorline
- autocmd WinEnter,BufRead * set cursorline
-augroup END
-hi CursorLine cterm=none ctermbg=darkblue gui=none guibg=darkblue
+"" CursorLine
+"set cursorline
+"" CursorLine current window only
+"augroup cch
+" autocmd! cch
+" autocmd WinLeave * set nocursorline
+" autocmd WinEnter,BufRead * set cursorline
+"augroup END
+"hi CursorLine cterm=none ctermbg=darkblue gui=none guibg=darkblue
 
 " Clipboard
 set clipboard+=autoselect
@@ -238,6 +238,14 @@ augroup HighlightTrailingSpaces
     autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
     autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
+
+" use local ackrc
+" let $ACKRC=".ackrc"
+nnoremap <expr> gr ':Ack!' . ' -w --ignore-dir=node_modules --ignore-dir=docs --ignore-dir=releases ' . expand('<cword>')
+
+if filereadable(".vimrc") && fnamemodify('.', ':p:h') != fnamemodify('~', ':p:h') && fnamemodify('.', ':p:h') != fnamemodify('~/.vim', ':p:h')
+	    source .vimrc
+endif
 
 "以下@tokuhirom さんの設定パクリ
 "(http://perl-users.jp/articles/advent-calendar/2012/casual/13)
@@ -338,12 +346,6 @@ if has('autocmd')
     endfunction
     autocmd BufReadPost * call AU_ReCheck_FENC()
 endif
-
-
-" autocmd FileType html :set  encoding=utf8
-" autocmd FileType javascript :set encoding=utf8
-" autocmd FileType perl :set encoding=euc-jp
-" autocmd FileType sql :set encoding=sjis
 
 " Highlight invisible characters
 set list
