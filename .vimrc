@@ -161,6 +161,7 @@ endfunction
 
 " clear search when press ecs twice
 "nmap <Esc><Esc> :nohlsearch<CR><Esc>
+nmap <C-e> :! perl -c %<Enter>
 
 " FuzzyFinder
 let g:fuf_enumeratingLimit = 40
@@ -173,14 +174,10 @@ nnoremap <silent> <C-l> :<C-u>FufLine!<CR>
 
 syntax enable
 set background=dark
-"set background=light
-set t_Co=256
 ""let g:solarized_termcolors=256
 "colorscheme solarized
-"colorscheme molokai
-colorscheme jellybeans
 "call togglebg#map("<F5>")
-"colorscheme Tomorrow-Night-Eighties
+colorscheme Tomorrow-Night-Eighties
 
 "colorscheme slate
 "hi Pmenu ctermfg=0 ctermbg=6 guibg=#444444
@@ -210,6 +207,7 @@ set clipboard+=unnamed
 " imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 " smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 " imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+imap <C-j> <Esc>
 
 
 " For snippet_complete marker.
@@ -292,14 +290,6 @@ map ,pt <Esc>:%! perltidy -se<CR>
 map ,ptv <Esc>:'<,'>! perltidy -se<CR>
 
 "@tokuhirom さんのパクリここまで
-
-
-imap <C-j> <Esc>
-nnoremap <C-e> :! perl -c %<Enter>
-nnoremap <C-g> :! sudo apachectl restart <Enter>
-" inoremap <C-l> if ($_::TEST_MODE) {use MLog;use Data::Dumper;local $Data::Dumper::Indent=1;local $Data::Dumper::Terse=1;MLog::write("$_::LOG_DIR/debug", Dumper("DEBUG"));}
-inoremap <C-D> if ($_::TEST_MODE) {use Data::Dumper;use IO::File;my $fh=IO::File->new(">> $_::LOG_DIR/mydump");if (defined $fh) { print $fh Dumper($str); $fh->close; }}
-
 
 " ==========================
 " 文字コード自動判定
