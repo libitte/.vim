@@ -29,6 +29,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neocomplcache-clang'
 NeoBundle 'pekepeke/titanium-vim'
 NeoBundle 'thinca/vim-quickrun'
@@ -38,7 +39,6 @@ NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/solarized'
 NeoBundle 'nanotech/jellybeans.vim'
-
 
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
