@@ -39,6 +39,7 @@ NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/solarized'
 NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'soramugi/auto-ctags.vim'
 
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
@@ -350,4 +351,14 @@ endif
 " Highlight invisible characters
 set list
 set lcs=tab:>-,trail:_,extends:>,precedes:<,nbsp:x
+
+"buffer
+map <silent>    <F2>    :bp<cr>
+map <silent>    <F3>    :bn<cr>
+nmap bb :ls<CR>:buf
+
+"auto_ctags
+let g:auto_ctags = 1
+let g:auto_ctags_directory_list = ['.git', '.svn']
+let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
 
