@@ -97,7 +97,7 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 set number
 set autoindent
-set expandtab
+"set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
@@ -350,4 +350,17 @@ endif
 " Highlight invisible characters
 set list
 set lcs=tab:>-,trail:_,extends:>,precedes:<,nbsp:x
+
+"jshint
+let g:syntastic_javascript_checker = 'jshint'
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'mojako/ref-sources.vim'
+NeoBundle 'mustardamus/jqapi'
+NeoBundle 'tokuhirom/jsref'
+let g:ref_jquery_doc_path = $HOME . '/.bundle/jqapi'
+let g:ref_javascript_doc_path = $HOME . '/.bundle/jsref/htdocs'
 
