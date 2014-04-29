@@ -1,6 +1,6 @@
-if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
-   set fileencodings=ucs-bom,utf-8,euc-jp,latin1
-endif
+"if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
+"   set fileencodings=ucs-bom,utf-8,euc-jp,latin1
+"endif
 
 set nocompatible    " Use Vim defaults (much better!)
 set bs=indent,eol,start     " allow backspacing over everything in insert mode
@@ -368,7 +368,8 @@ let g:ref_javascript_doc_path = $HOME . '/.bundle/jsref/htdocs'
 "buffer
 map <silent>    <F2>    :bp<cr>
 map <silent>    <F3>    :bn<cr>
-nmap bb :ls<CR>:buf
+"nmap bb :ls<CR>:buf
+nmap mm :ls<CR>:buf
 
 "auto_ctags
 let g:auto_ctags = 1
