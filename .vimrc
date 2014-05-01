@@ -362,4 +362,4 @@ let g:auto_ctags_directory_list = ['.git', '.svn']
 let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
 
 "mouse
-set mouse=a
+"set mouse=a
