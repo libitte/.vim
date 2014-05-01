@@ -178,9 +178,8 @@ set background=dark
 ""let g:solarized_termcolors=256
 "colorscheme solarized
 "call togglebg#map("<F5>")
-colorscheme Tomorrow-Night-Eighties
-
-"colorscheme slate
+"colorscheme Tomorrow-Night-Eighties
+colorscheme slate
 "hi Pmenu ctermfg=0 ctermbg=6 guibg=#444444
 "hi PmenuSel ctermfg=7 ctermbg=4 guibg=#555555 guifg=#ffffff
 "set cursorline
