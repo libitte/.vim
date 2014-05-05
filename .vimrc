@@ -25,7 +25,6 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " Recommended to install
 " After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
 " NeoBundle 'Shougo/vimproc'
-" NeoBundle 'Shougo/vimproc'
 NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
@@ -40,6 +39,8 @@ NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/solarized'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'soramugi/auto-ctags.vim'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'JavaScript-syntax'
 
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
@@ -227,6 +228,9 @@ let g:neocomplcache_max_list=1000
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType javascript :compiler gjslint
+autocmd FileType coffee,javascript setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
+autocmd QuickfixCmdPost make copen
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
@@ -363,3 +367,5 @@ let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
 
 "mouse
 "set mouse=a
+
+
