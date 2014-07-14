@@ -176,6 +176,7 @@ nnoremap <silent> <C-l> :<C-u>FufLine!<CR>
 
 syntax enable
 set background=dark
+set t_Co=256
 ""let g:solarized_termcolors=256
 "colorscheme solarized
 "call togglebg#map("<F5>")
@@ -183,6 +184,8 @@ set background=dark
 colorscheme slate
 set t_Co=256
 "colorscheme molokai
+"colorscheme slate
+"colorscheme jellybeans
 "hi Pmenu ctermfg=0 ctermbg=6 guibg=#444444
 "hi PmenuSel ctermfg=7 ctermbg=4 guibg=#555555 guifg=#ffffff
 "set cursorline
