@@ -41,6 +41,12 @@ NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'soramugi/auto-ctags.vim'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'JavaScript-syntax'
+" syntax + 自動compile
+NeoBundle 'kchmck/vim-coffee-script'
+" js BDDツール
+NeoBundle 'claco/jasmine.vim'
+" indentの深さに色を付ける
+NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
@@ -177,29 +183,21 @@ nnoremap <silent> <C-l> :<C-u>FufLine!<CR>
 syntax enable
 set background=dark
 set t_Co=256
-""let g:solarized_termcolors=256
-"colorscheme solarized
-"call togglebg#map("<F5>")
-"colorscheme Tomorrow-Night-Eighties
 colorscheme slate
-set t_Co=256
-"colorscheme molokai
-"colorscheme slate
-"colorscheme jellybeans
-"hi Pmenu ctermfg=0 ctermbg=6 guibg=#444444
-"hi PmenuSel ctermfg=7 ctermbg=4 guibg=#555555 guifg=#ffffff
-"set cursorline
-"hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
 
 "" CursorLine
-"set cursorline
+set cursorline
+hi Pmenu ctermfg=0 ctermbg=6 guibg=#444444
+hi PmenuSel ctermfg=7 ctermbg=4 guibg=#555555 guifg=#ffffff
+hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+
 "" CursorLine current window only
-"augroup cch
-" autocmd! cch
-" autocmd WinLeave * set nocursorline
-" autocmd WinEnter,BufRead * set cursorline
-"augroup END
-"hi CursorLine cterm=none ctermbg=darkblue gui=none guibg=darkblue
+augroup cch
+ autocmd! cch
+ autocmd WinLeave * set nocursorline
+ autocmd WinEnter,BufRead * set cursorline
+augroup END
+hi CursorLine cterm=none ctermbg=darkblue gui=none guibg=darkblue
 
 " Clipboard
 set clipboard+=autoselect
@@ -239,6 +237,11 @@ autocmd QuickfixCmdPost make copen
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
+" vimにcoffeeファイルタイプを認識させる
+au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+" インデントを設定
+autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
+
 command! Rpspace :normal :%s/\s\+$// <CR><ESC>
 
 " hilight the end space
@@ -253,7 +256,7 @@ augroup END
 nnoremap <expr> gr ':Ack!' . ' -w --ignore-dir=node_modules --ignore-dir=docs --ignore-dir=releases ' . expand('<cword>')
 
 if filereadable(".vimrc") && fnamemodify('.', ':p:h') != fnamemodify('~', ':p:h') && fnamemodify('.', ':p:h') != fnamemodify('~/.vim', ':p:h')
-	    source .vimrc
+    source .vimrc
 endif
 
 "以下@tokuhirom さんの設定パクリ
@@ -373,4 +376,128 @@ let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
 "mouse
 "set mouse=a
 
+"ruby
+"def..end
+NeoBundleLazy 'edsono/vim-matchit', { 'autoload' : {
+      \ 'filetypes': 'ruby',
+      \ 'mappings' : ['nx', '%'] }}
+"def..end (another practice)
+"if !exists('loaded_matchit')
+"    "matchitを有効化
+"    runtime macros/matchit.vim
+"endif
+
+NeoBundle 'Shougo/vimproc.vim', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
+
+NeoBundleLazy 'alpaca-tc/alpaca_tags', {
+      \ 'depends': 'Shougo/vimproc',
+      \ 'autoload' : {
+      \   'commands': ['TagsUpdate', 'TagsSet', 'TagsBundle']
+      \ }}
+
+"----------------------------------------
+" vim-ref
+"----------------------------------------
+"{{{
+"let g:ref_open                    = 'split'
+"let g:ref_refe_cmd                = expand('~/.vim/ref/ruby-ref1.9.2/refe-1_9_2')
+"
+"nnoremap rr :<C-U>Unite ref/refe     -default-action=split -input=
+"nnoremap ri :<C-U>Unite ref/ri       -default-action=split -input=
+"
+"aug MyAutoCmd
+"  au FileType ruby,eruby,ruby.rspec nnoremap <silent><buffer>KK :<C-U>Unite -no-start-insert ref/ri   -input=<C-R><C-W><CR>
+"  au FileType ruby,eruby,ruby.rspec nnoremap <silent><buffer>K  :<C-U>Unite -no-start-insert ref/refe -input=<C-R><C-W><CR>
+"aug END
+"}}}
+
+"Plugin 'szw/vim-tags'
+let g:vim_tags_gems_tags_command = "/usr/local/Cellar/ctags/5.8/bin/ctags -R -f .Gemfile.lock.tags `bundle show --paths` 2>/dev/null &"
+
+set tags+=.tags
+set tags+=.Gemfile.lock.tags
+
+set noswapfile
+
+" -----------------------------------------------------------------
+" https://github.com/vim-ruby/vim-ruby/blob/master/ftdetect/ruby.vim
+" -----------------------------------------------------------------
+function! s:setf(filetype) abort
+    if &filetype !=# a:filetype
+        let &filetype = a:filetype
+    endif
+endfunction
+
+" Ruby
+au BufNewFile,BufRead *.rb,*.rbw,*.gemspec  call s:setf('ruby')
+
+" Ruby on Rails
+au BufNewFile,BufRead *.builder,*.rxml,*.rjs,*.ruby call s:setf('ruby')
+
+" Rakefile
+au BufNewFile,BufRead [rR]akefile,*.rake    call s:setf('ruby')
+
+" Rantfile
+au BufNewFile,BufRead [rR]antfile,*.rant    call s:setf('ruby')
+
+" IRB config
+au BufNewFile,BufRead .irbrc,irbrc      call s:setf('ruby')
+
+" Pry config
+au BufNewFile,BufRead .pryrc            call s:setf('ruby')
+
+" Rackup
+au BufNewFile,BufRead *.ru          call s:setf('ruby')
+
+" Capistrano
+au BufNewFile,BufRead Capfile,*.cap         call s:setf('ruby')
+
+" Bundler
+au BufNewFile,BufRead Gemfile           call s:setf('ruby')
+
+" Guard
+au BufNewFile,BufRead Guardfile,.Guardfile  call s:setf('ruby')
+
+" Chef
+au BufNewFile,BufRead Cheffile          call s:setf('ruby')
+au BufNewFile,BufRead Berksfile         call s:setf('ruby')
+
+" Vagrant
+au BufNewFile,BufRead [vV]agrantfile        call s:setf('ruby')
+
+" Autotest
+au BufNewFile,BufRead .autotest         call s:setf('ruby')
+
+" eRuby
+au BufNewFile,BufRead *.erb,*.rhtml     call s:setf('eruby')
+
+" Thor
+au BufNewFile,BufRead [tT]horfile,*.thor    call s:setf('ruby')
+
+" Rabl
+au BufNewFile,BufRead *.rabl            call s:setf('ruby')
+
+" Jbuilder
+au BufNewFile,BufRead *.jbuilder        call s:setf('ruby')
+
+" Puppet librarian
+au BufNewFile,BufRead Puppetfile        call s:setf('ruby')
+"
+" Buildr Buildfile
+au BufNewFile,BufRead [Bb]uildfile      call s:setf('ruby')
+
+" Appraisal
+au BufNewFile,BufRead Appraisals        call s:setf('ruby')
+
+" CocoaPods
+au BufNewFile,BufRead Podfile,*.podspec     call s:setf('ruby')
+
+" vim: nowrap sw=2 sts=2 ts=8 noet:
 
